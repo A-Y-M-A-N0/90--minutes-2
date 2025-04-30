@@ -1,7 +1,7 @@
 
 import { toast } from "sonner";
 
-const API_KEY = '96e05374116a40d4b5de59f5eed18488';
+const API_KEY = '9e5f354e6088bb300046c7a2ffbaa7e36be102b893bcfda77bac6d50b2be9028';
 const BASE_URL = 'https://api.football-data.org/v4';
 
 // Define the API response types
