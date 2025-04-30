@@ -4,6 +4,81 @@ import { toast } from "sonner";
 const API_KEY = '96e05374116a40d4b5de59f5eed18488';
 const BASE_URL = 'https://api.football-data.org/v4';
 
+// Define the API response types
+export interface StandingsResponse {
+  standings: Array<{
+    table: Array<{
+      position: number;
+      team: {
+        id: number;
+        name: string;
+        crest?: string;
+        crestUrl?: string;
+      };
+      playedGames: number;
+      won: number;
+      draw: number;
+      lost: number;
+      points: number;
+      goalsFor: number;
+      goalsAgainst: number;
+      goalDifference: number;
+    }>;
+  }>;
+}
+
+export interface MatchesResponse {
+  matches: Array<{
+    id: number;
+    utcDate: string;
+    status: string;
+    matchday: number;
+    stage: string;
+    homeTeam: {
+      id: number;
+      name: string;
+      crest?: string;
+    };
+    awayTeam: {
+      id: number;
+      name: string;
+      crest?: string;
+    };
+    score: {
+      fullTime: {
+        home: number | null;
+        away: number | null;
+      };
+    };
+  }>;
+}
+
+export interface ScorersResponse {
+  scorers: Array<{
+    player: {
+      id: number;
+      name: string;
+      nationality?: string;
+    };
+    team: {
+      id: number;
+      name: string;
+      crest?: string;
+    };
+    playedMatches: number;
+    goals: number;
+    assists?: number;
+    penalties?: number;
+  }>;
+}
+
+export interface TeamInfoResponse {
+  id: number;
+  name: string;
+  crest: string;
+  // Add other team properties as needed
+}
+
 interface ApiResponse<T> {
   data?: T;
   error?: string;
@@ -36,7 +111,7 @@ async function fetchFromAPI<T>(endpoint: string): Promise<ApiResponse<T>> {
 
 // Get Premier League standings
 export const getStandings = () => {
-  return fetchFromAPI('/competitions/PL/standings');
+  return fetchFromAPI<StandingsResponse>('/competitions/PL/standings');
 };
 
 // Get upcoming matches
@@ -46,7 +121,7 @@ export const getMatches = (status = 'SCHEDULED', dateFrom?: string, dateTo?: str
   if (dateFrom) endpoint += `&dateFrom=${dateFrom}`;
   if (dateTo) endpoint += `&dateTo=${dateTo}`;
   
-  return fetchFromAPI(endpoint);
+  return fetchFromAPI<MatchesResponse>(endpoint);
 };
 
 // Get finished matches (past matches)
@@ -58,15 +133,15 @@ export const getPastMatches = () => {
   const dateFrom = oneMonthAgo.toISOString().split('T')[0];
   const dateTo = today.toISOString().split('T')[0];
   
-  return fetchFromAPI(`/competitions/PL/matches?status=FINISHED&dateFrom=${dateFrom}&dateTo=${dateTo}`);
+  return fetchFromAPI<MatchesResponse>(`/competitions/PL/matches?status=FINISHED&dateFrom=${dateFrom}&dateTo=${dateTo}`);
 };
 
 // Get top scorers
 export const getTopScorers = () => {
-  return fetchFromAPI('/competitions/PL/scorers?limit=10');
+  return fetchFromAPI<ScorersResponse>('/competitions/PL/scorers?limit=10');
 };
 
 // Get team information
 export const getTeamInfo = (teamId: number) => {
-  return fetchFromAPI(`/teams/${teamId}`);
+  return fetchFromAPI<TeamInfoResponse>(`/teams/${teamId}`);
 };

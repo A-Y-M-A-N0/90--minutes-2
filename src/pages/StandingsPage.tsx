@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { getStandings } from "@/services/footballApiService";
+import { getStandings, StandingsResponse } from "@/services/footballApiService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";

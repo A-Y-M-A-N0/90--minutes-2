@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { getTopScorers } from "@/services/footballApiService";
+import { getTopScorers, ScorersResponse } from "@/services/footballApiService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
